@@ -1,0 +1,36 @@
+name: profile engine
+
+# Changing the engine or the logo → GitHub rebuilds the SVG cards and README
+# and commits them. Run it by hand from the Actions tab at any time.
+on:
+  push:
+    branches: [main]
+    paths: ["engine/**", "brand/**", "requirements.txt"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-engine
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m engine build
+      - name: Commit regenerated cards
+        run: |
+          git config user.name  "profile-engine"
+          git config user.email "actions@users.noreply.github.com"
+          git add profile
+          git diff --cached --quiet && { echo "nothing changed"; exit 0; }
+          git commit -m "chore: regenerate profile cards [skip ci]"
+          git push
