@@ -5,7 +5,7 @@ name: profile engine
 on:
   push:
     branches: [main]
-    paths: ["engine/**", "brand/**", "requirements.txt"]
+    paths: ["engine/**", "brand/**", "pyproject.toml", "uv.lock"]
   workflow_dispatch:
 
 permissions:
@@ -20,12 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.13"
-          cache: pip
-      - run: pip install -r requirements.txt
-      - run: python -m engine build
+          enable-cache: true
+      - run: uv sync --locked --no-dev      # Python from .python-version, deps from uv.lock
+      - run: uv run --no-sync python -m engine build
       - name: Commit regenerated cards
         run: |
           git config user.name  "profile-engine"

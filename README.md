@@ -4,11 +4,12 @@ Organization profile for Gravis. GitHub shows [`profile/README.md`](profile/READ
 
 ## Hero card
 
-`profile/assets/hero-{dark,light}.svg` is generated (the README picks one with `prefers-color-scheme`):
+`profile/assets/hero-{dark,light}.svg` and `profile/README.md` are generated (the README picks a card
+with `prefers-color-scheme`). GitHub Actions rebuilds them on every push to `engine/` or `brand/`; locally:
 
 ```bash
-pip install -r requirements.txt   # fonttools, for subsetting the embedded fonts
-python -m engine build
+uv sync
+uv run python -m engine build
 ```
 
 - `engine/cards.py` — the card: headline, status and the phone filling with water

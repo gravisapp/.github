@@ -1,6 +1,7 @@
 """Profile cards. Each function takes a Theme and returns a complete SVG document."""
 
 import math
+from html import escape
 
 from .fonts import font_faces
 from .logo import logo
@@ -74,7 +75,7 @@ def hero(t: Theme) -> str:
     status = (
         f'<circle class="bl" cx="{x0 + 4}" cy="{287}" r="4" fill="{t.accent}"/>'
         f'<text x="{x0 + 18}" y="292" class="mono" font-size="13" font-weight="500" letter-spacing="2.6">'
-        f'<tspan fill="{t.text2}">{STATUS[0]}</tspan><tspan fill="{t.text3}"> · {STATUS[1]}</tspan></text>'
+        f'<tspan fill="{t.text2}">{escape(STATUS[0])}</tspan><tspan fill="{t.text3}"> · {escape(STATUS[1])}</tspan></text>'
     )
     font_css = font_faces({("sans", 600): "".join(HEADLINE), ("mono", 500): " · ".join(STATUS)})
 

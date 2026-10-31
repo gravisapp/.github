@@ -6,6 +6,7 @@ regenerates profile/README.md to point at them.
 
 import hashlib
 import sys
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from .cards import CARDS
@@ -41,6 +42,8 @@ def build() -> None:
         versions = {}
         for mode, theme in THEMES.items():
             svg = render(theme)
+            # Browsers render <img> SVG as strict XML and silently show nothing if it's malformed.
+            ET.fromstring(svg)
             (OUT / f"{name}-{mode}.svg").write_text(svg, encoding="utf-8", newline="\n")
             versions[mode] = hashlib.sha1(svg.encode()).hexdigest()[:8]
         pictures.append(picture(name, versions))

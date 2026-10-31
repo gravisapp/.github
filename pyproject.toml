@@ -1,0 +1,11 @@
+[project]
+name = "gravis-profile"
+version = "0.1.0"
+description = "Generator for the Gravis organization profile cards"
+requires-python = ">=3.13"
+dependencies = [
+    "fonttools[woff]>=4.50",  # subsetting and WOFF2 for the embedded fonts
+]
+
+[tool.uv]
+package = false
